@@ -1,0 +1,19 @@
+# Build output
+target/
+
+# Maven
+/pom.xml
+/.mvn/
+/mvnw
+/mvnw.cmd
+
+# IDE
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
