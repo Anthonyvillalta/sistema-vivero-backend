@@ -3,9 +3,11 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:vivero_villa_verde}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
     username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:root}}
     password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:''}}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER:com.mysql.cj.jdbc.Driver}
+    hikari:
+      initialization-fail-timeout: 5000
+      connection-timeout: 30000
+      validation-timeout: 5000
   jpa:
-    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.MySQLDialect}
     hibernate:
       ddl-auto: update
     show-sql: false

@@ -11,11 +11,23 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      # Configure these in Render Dashboard -> Settings -> Environment Variables
-      # Do NOT set values here - they would override dashboard settings
       - key: PORT
         value: 10000
     healthCheck:
       path: /api/auth/health
       interval: 60
       timeout: 10
+    # IMPORTANT: Set database environment variables in Render Dashboard:
+    #   Settings -> Environment -> Environment Variables
+    # You need an external MySQL database (AWS RDS, PlanetScale, etc.)
+    # Then add these variables:
+    #   DB_HOST = your-mysql-host
+    #   DB_PORT = 3306
+    #   DB_NAME = vivero_villa_verde
+    #   DB_USER = your-mysql-user
+    #   DB_PASSWORD = your-mysql-password
+    #
+    # Or use the full JDBC URL:
+    #   SPRING_DATASOURCE_URL = jdbc:mysql://host:3306/dbname?useSSL=false&...
+    #   SPRING_DATASOURCE_USERNAME = user
+    #   SPRING_DATASOURCE_PASSWORD = password

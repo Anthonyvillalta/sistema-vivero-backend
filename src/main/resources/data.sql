@@ -105,23 +105,5 @@ INSERT INTO districts (id, code, name, province_id, active) VALUES
 (13, '150136', 'San Miguel', 2, true),
 (14, '150117', 'Los Olivos', 2, true);
 
--- Asegurar longitud de columna movement_type en MySQL para enum extendido (LIBERAR_RESERVA, MERMA, etc.)
-ALTER TABLE inventory_movements MODIFY COLUMN movement_type VARCHAR(50) NOT NULL;
-
--- Reiniciar autoincremento de IDs en MySQL
-ALTER TABLE departments AUTO_INCREMENT = 100;
-ALTER TABLE provinces AUTO_INCREMENT = 100;
-ALTER TABLE districts AUTO_INCREMENT = 100;
-ALTER TABLE roles AUTO_INCREMENT = 100;
-ALTER TABLE users AUTO_INCREMENT = 100;
-ALTER TABLE categories AUTO_INCREMENT = 100;
-ALTER TABLE products AUTO_INCREMENT = 100;
-ALTER TABLE customers AUTO_INCREMENT = 100;
-ALTER TABLE suppliers AUTO_INCREMENT = 100;
-ALTER TABLE purchases AUTO_INCREMENT = 100;
-ALTER TABLE purchase_items AUTO_INCREMENT = 100;
-ALTER TABLE sales AUTO_INCREMENT = 100;
-ALTER TABLE sale_items AUTO_INCREMENT = 100;
-ALTER TABLE orders AUTO_INCREMENT = 100;
-ALTER TABLE deliveries AUTO_INCREMENT = 100;
-ALTER TABLE expenses AUTO_INCREMENT = 100;
+-- INSERT statements work on both MySQL and PostgreSQL
+-- MySQL-specific ALTER statements are handled by DatabaseMigrationRunner
