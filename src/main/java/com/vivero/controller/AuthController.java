@@ -29,4 +29,10 @@ public class AuthController {
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request, "system"));
     }
+
+    @GetMapping("/health")
+    @Operation(summary = "Health check endpoint")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("OK");
+    }
 }
