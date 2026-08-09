@@ -32,31 +32,40 @@ public class UserService {
     @PostConstruct
     @Transactional
     public void initDefaultUsers() {
-        if (userRepository.count() == 0) {
-            Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Rol ROLE_ADMIN no encontrado"));
+        Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElse(null);
+        if (adminRole == null) {
+            adminRole = roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
+        }
 
+        Role vendedorRole = roleRepository.findByName(RoleName.ROLE_VENDEDOR).orElse(null);
+        if (vendedorRole == null) {
+            vendedorRole = roleRepository.save(Role.builder().name(RoleName.ROLE_VENDEDOR).build());
+        }
+
+        // Always ensure default Anthony Villalta admin user exists with password '060697'
+        if (!userRepository.existsByUsername("anthony.villalta@hotmail.com") && !userRepository.existsByEmail("anthony.villalta@hotmail.com")) {
             userRepository.save(User.builder()
-                    .username("admin")
-                    .password(passwordEncoder.encode("admin123"))
-                    .fullName("Administrador")
-                    .email("admin@vivero.com")
-                    .phone("999999999")
+                    .username("anthony.villalta@hotmail.com")
+                    .password(passwordEncoder.encode("060697"))
+                    .fullName("Anthony Villalta")
+                    .email("anthony.villalta@hotmail.com")
+                    .phone("+51 987654321")
                     .role(adminRole)
                     .active(true)
+                    .createdBy("system")
                     .build());
+        }
 
-            Role vendedorRole = roleRepository.findByName(RoleName.ROLE_VENDEDOR)
-                    .orElseThrow(() -> new RuntimeException("Rol ROLE_VENDEDOR no encontrado"));
-
+        if (userRepository.count() <= 1 && !userRepository.existsByUsername("vendedor")) {
             userRepository.save(User.builder()
                     .username("vendedor")
                     .password(passwordEncoder.encode("vendedor123"))
-                    .fullName("Vendedor")
-                    .email("vendedor@vivero.com")
-                    .phone("988888888")
+                    .fullName("Vendedor Demo")
+                    .email("vendedor@vivero.pe")
+                    .phone("+51 988888888")
                     .role(vendedorRole)
                     .active(true)
+                    .createdBy("system")
                     .build());
         }
     }

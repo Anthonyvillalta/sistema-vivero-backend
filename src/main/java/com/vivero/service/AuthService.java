@@ -36,7 +36,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
 
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getUsername())
                 .orElseThrow(() -> new BadRequestException("Usuario no encontrado"));
 
         return AuthResponse.of(jwt, user.getUsername(), user.getFullName(), user.getRole().getName().name());
