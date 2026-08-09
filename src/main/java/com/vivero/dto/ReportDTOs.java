@@ -8,6 +8,8 @@ import java.util.List;
 
 public class ReportDTOs {
 
+public class ReportDTOs {
+
     @Data
     @Builder
     public static class SalesSummaryDTO {
@@ -156,7 +158,49 @@ public class ReportDTOs {
         private BigDecimal stock;
         private BigDecimal costPrice;
         private BigDecimal stockValue;
+        private BigDecimal minPrice;
         private BigDecimal minStock;
+    }
+
+    @Data
+    @Builder
+    public static class InventoryValuationDetailDTO {
+        private BigDecimal totalCostStockValue;
+        private BigDecimal totalPotentialRevenue;
+        private BigDecimal totalPotentialProfit;
+        private Long totalProducts;
+        private Long totalSpecies;
+        private BigDecimal totalAvailableStock;
+        private List<StockCategoryValuationDTO> valuationByCategory;
+        List<LowStockAlertDTO> lowStockAlerts;
+    }
+
+    @Data
+    @Builder
+    public static class StockCategoryValuationDTO {
+        private Long categoryId;
+        private String categoryName;
+        private BigDecimal totalCostValue;
+        private BigDecimal totalPotentialRevenue;
+        private BigDecimal totalPotentialProfit;
+        private Long totalProducts;
+        private Long totalQuantity;
+    }
+
+    @Data
+    @Builder
+    public static class LowStockAlertDTO {
+        private Long productId;
+        private String productName;
+        private String categoryName;
+        private String unitType;
+        private BigDecimal stock;
+        private BigDecimal availableStock;
+        private BigDecimal costPrice;
+        private BigDecimal minPrice;
+        private BigDecimal minStock;
+        private BigDecimal stockValue;
+        private BigDecimal daysUntilOutOfStock;
     }
 
     @Data

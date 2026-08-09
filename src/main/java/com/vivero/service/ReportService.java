@@ -326,6 +326,68 @@ public class ReportService {
                 .build();
     }
 
+    public InventoryValuationDetailDTO getInventoryValuationDetail() {
+        List<Product> products = productRepository.findAllWithCategory();
+
+        BigDecimal totalCostStockValue = BigDecimal.ZERO;
+        BigDecimal totalPotentialRevenue = BigDecimal.ZERO;
+        long totalProducts = 0;
+
+        for (Product p : products) {
+            if (p.getActive() && p.getStock() != null && p.getStock().compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal costValue = p.getStock().multiply(p.getCostPrice());
+                BigDecimal revenueValue = p.getStock().multiply(p.getPrice());
+                totalCostStockValue = totalCostStockValue.add(costValue);
+                totalPotentialRevenue = totalPotentialRevenue.add(revenueValue);
+                totalProducts++;
+            }
+        }
+
+        BigDecimal totalPotentialProfit = totalPotentialRevenue.subtract(totalCostStockValue);
+        Long totalSpecies = productRepository.countDistinctProductNames();
+        BigDecimal totalAvailableStock = productRepository.sumAvailableStock();
+
+        List<StockCategoryValuationDTO> valuationByCategory = productRepository.inventoryValuationDetailByCategory()
+                .stream()
+                .map(r -> StockCategoryValuationDTO.builder()
+                        .categoryId((Long) r[0])
+                        .categoryName((String) r[1])
+                        .totalCostValue((BigDecimal) r[2])
+                        .totalPotentialRevenue((BigDecimal) r[3])
+                        .totalPotentialProfit((BigDecimal) r[4])
+                        .totalProducts(((Number) r[5]).longValue())
+                        .totalQuantity(((Number) r[6]).longValue())
+                        .build())
+                .collect(Collectors.toList());
+
+        List<LowStockAlertDTO> lowStockAlerts = products.stream()
+                .filter(p -> p.getActive() && p.getStock() != null && p.getStock().compareTo(p.getMinStock()) <= 0)
+                .map(p -> LowStockAlertDTO.builder()
+                        .productId(p.getId())
+                        .productName(p.getName())
+                        .categoryName(p.getCategory() != null ? p.getCategory().getName() : "Sin categoría")
+                        .unitType(p.getUnitType().toString())
+                        .stock(p.getStock())
+                        .availableStock(p.getAvailableStock())
+                        .costPrice(p.getCostPrice())
+                        .minPrice(p.getPrice())
+                        .minStock(p.getMinStock())
+                        .stockValue(p.getStock().multiply(p.getCostPrice()))
+                        .build())
+                .collect(Collectors.toList());
+
+        return InventoryValuationDetailDTO.builder()
+                .totalCostStockValue(totalCostStockValue)
+                .totalPotentialRevenue(totalPotentialRevenue)
+                .totalPotentialProfit(totalPotentialProfit)
+                .totalProducts(totalProducts)
+                .totalSpecies(totalSpecies)
+                .totalAvailableStock(totalAvailableStock)
+                .valuationByCategory(valuationByCategory)
+                .lowStockAlerts(lowStockAlerts)
+                .build();
+    }
+
     public List<TopCustomerDTO> getTopCustomers(LocalDate startDate, LocalDate endDate, int limit) {
         LocalDateTime[] range = resolveDateRange(startDate, endDate);
         List<Object[]> results = customerRepository.findTopCustomersBySales(range[0], range[1]);

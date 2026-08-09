@@ -79,6 +79,12 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getInventoryValuation());
     }
 
+    @GetMapping("/inventory-valuation-detail")
+    @Operation(summary = "Detalle completo de valoración de inventario con alertas de stock")
+    public ResponseEntity<InventoryValuationDetailDTO> getInventoryValuationDetail() {
+        return ResponseEntity.ok(reportService.getInventoryValuationDetail());
+    }
+
     @GetMapping("/top-customers")
     @Operation(summary = "Clientes con mayor valor de compra")
     public ResponseEntity<List<TopCustomerDTO>> getTopCustomers(
