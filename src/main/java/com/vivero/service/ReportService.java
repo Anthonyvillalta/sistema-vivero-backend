@@ -33,7 +33,7 @@ public class ReportService {
     private static final DateTimeFormatter FULL_DATE_FMT = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     private LocalDateTime[] resolveDateRange(LocalDate startDate, LocalDate endDate) {
-        LocalDateTime start = (startDate != null) ? startDate.atStartOfDay() : LocalDate.now().minusDays(30).atStartOfDay();
+        LocalDateTime start = (startDate != null) ? startDate.atStartOfDay() : LocalDate.of(2020, 1, 1).atStartOfDay();
         LocalDateTime end = (endDate != null) ? endDate.atTime(LocalTime.MAX) : LocalDate.now().atTime(LocalTime.MAX);
         return new LocalDateTime[]{start, end};
     }
@@ -387,11 +387,32 @@ public class ReportService {
         LocalDateTime[] range = resolveDateRange(startDate, endDate);
         List<Object[]> results = customerRepository.findTopCustomersBySales(range[0], range[1]);
 
+        if (results.isEmpty()) {
+            results = customerRepository.findTopCustomersAllTime();
+        }
+
+        if (results.isEmpty()) {
+            List<Customer> customers = customerRepository.findByActiveTrue();
+            return customers.stream()
+                    .filter(c -> c.getTotalPurchases() != null && c.getTotalPurchases().compareTo(BigDecimal.ZERO) > 0)
+                    .sorted((a, b) -> b.getTotalPurchases().compareTo(a.getTotalPurchases()))
+                    .limit(limit)
+                    .map(c -> TopCustomerDTO.builder()
+                            .customerId(c.getId())
+                            .fullName(c.getFullName())
+                            .phone(c.getPhone() != null ? c.getPhone() : "N/A")
+                            .purchaseCount(1L)
+                            .totalPurchases(c.getTotalPurchases())
+                            .customerLifetimeValue(c.getTotalPurchases().doubleValue())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+
         return results.stream()
                 .limit(limit)
                 .map(r -> {
                     BigDecimal total = (BigDecimal) r[4];
-                    Long count = (Long) r[3];
+                    Long count = ((Number) r[3]).longValue();
                     Double avg = count > 0 ? total.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP).doubleValue() : 0.0;
                     return TopCustomerDTO.builder()
                             .customerId((Long) r[0])
