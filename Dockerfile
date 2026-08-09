@@ -19,4 +19,4 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-Duser.timezone=America/Lima","-jar","app.jar"]
+ENTRYPOINT ["java","-Duser.timezone=America/Lima","-XX:MaxRAMPercentage=60.0","-XX:MinRAMPercentage=25.0","-XX:+UseG1GC","-jar","app.jar"]
