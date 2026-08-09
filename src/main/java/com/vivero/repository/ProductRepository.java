@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE p.active = true AND (p.stock - p.reservedStock) <= p.minStock")
     List<Product> findCriticalStockProducts();
 
-    @Query("SELECT p.id, p.name, p.variety, c.name, SUM(si.quantity) as qty, SUM(si.totalPrice) as revenue " +
+    @Query("SELECT p.id, p.name, p.variety, c.name, SUM(si.quantity) as qty, SUM(si.totalPrice) as revenue, COALESCE(SUM(si.quantity * p.costPrice), 0) as totalCost " +
            "FROM SaleItem si JOIN si.product p JOIN p.category c JOIN si.sale s " +
            "WHERE s.saleDate BETWEEN :startDate AND :endDate " +
            "GROUP BY p.id, p.name, p.variety, c.name ORDER BY revenue DESC")

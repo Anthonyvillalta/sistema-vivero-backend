@@ -120,7 +120,7 @@ public class ReportService {
                 .map(r -> {
                     BigDecimal revenue = (BigDecimal) r[5];
                     BigDecimal qty = (BigDecimal) r[4];
-                    BigDecimal cost = BigDecimal.ZERO;
+                    BigDecimal cost = (r.length > 6 && r[6] != null) ? (BigDecimal) r[6] : BigDecimal.ZERO;
                     BigDecimal grossProfit = revenue.subtract(cost);
                     BigDecimal margin = revenue.compareTo(BigDecimal.ZERO) > 0
                             ? grossProfit.divide(revenue, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100))
@@ -223,15 +223,10 @@ public class ReportService {
         BigDecimal totalRevenue = saleRepository.sumTotalByDateRange(start, end);
         BigDecimal totalExpenses = expenseRepository.sumTotalByDateRange(start, end);
 
+        // Real Cost of Goods Sold directly computed from MySQL DB (SUM(quantity_sold * product_cost_price))
+        BigDecimal totalCostOfGoods = saleRepository.sumCostOfGoodsSoldByDateRange(start, end);
+
         List<ProductSalesDTO> productSales = getProductSalesRanking(startDate, endDate, 10);
-
-        BigDecimal totalCostOfGoods = productSales.stream()
-                .map(ProductSalesDTO::getTotalCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        if (totalCostOfGoods.compareTo(BigDecimal.ZERO) == 0) {
-            totalCostOfGoods = totalRevenue.multiply(BigDecimal.valueOf(0.4));
-        }
 
         BigDecimal grossProfit = totalRevenue.subtract(totalCostOfGoods);
         BigDecimal grossProfitMargin = totalRevenue.compareTo(BigDecimal.ZERO) > 0
