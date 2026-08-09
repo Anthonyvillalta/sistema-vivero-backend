@@ -5,9 +5,9 @@ server:
 
 spring:
   application:
-    name: vivero-villa-verde
+    name: sistema-vivero
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:vivero_villa_verde}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:viverodb}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima}
     username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:root}}
     password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:''}}
     hikari:
@@ -44,4 +44,4 @@ springdoc:
 logging:
   level:
     root: INFO
-    com.viverovillaverde: INFO
+    com.vivero: INFO

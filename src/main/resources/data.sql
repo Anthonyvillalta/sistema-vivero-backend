@@ -9,9 +9,9 @@ INSERT INTO roles (id, name) VALUES (3, 'ROLE_REPARTIDOR');
 -- $2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6 (admin123)
 INSERT INTO users (id, username, password, full_name, email, phone, role_id, active, created_by)
 VALUES 
-(1, 'admin', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'Administrador General', 'admin@viverovillaverde.pe', '+51 987654321', 1, true, 'system'),
-(2, 'vendedor', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'María Ventas', 'ventas@viverovillaverde.pe', '+51 987654322', 2, true, 'system'),
-(3, 'repartidor', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'Carlos Delivery', 'delivery@viverovillaverde.pe', '+51 987654323', 3, true, 'system');
+(1, 'admin', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'Administrador General', 'admin@vivero.pe', '+51 987654321', 1, true, 'system'),
+(2, 'vendedor', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'María Ventas', 'ventas@vivero.pe', '+51 987654322', 2, true, 'system'),
+(3, 'repartidor', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'Carlos Delivery', 'delivery@vivero.pe', '+51 987654323', 3, true, 'system');
 
 -- Categorías
 INSERT INTO categories (id, name, description, icon_name, created_by) VALUES
