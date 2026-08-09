@@ -42,12 +42,11 @@ public class UserService {
             vendedorRole = roleRepository.save(Role.builder().name(RoleName.ROLE_VENDEDOR).build());
         }
 
-        // Always ensure default Anthony Villalta admin user exists AND password is updated to '060697'
-        User anthony = userRepository.findByEmail("anthony.villalta@hotmail.com")
-                .orElseGet(() -> userRepository.findByUsername("anthony.villalta@hotmail.com")
-                .orElseGet(() -> userRepository.findById(1L).orElse(null)));
+        // Only create default Anthony Villalta admin ONCE if missing from database
+        boolean adminExists = userRepository.existsByUsername("anthony.villalta@hotmail.com")
+                           || userRepository.existsByEmail("anthony.villalta@hotmail.com");
 
-        if (anthony == null) {
+        if (!adminExists) {
             userRepository.save(User.builder()
                     .username("anthony.villalta@hotmail.com")
                     .password(passwordEncoder.encode("060697"))
@@ -58,17 +57,9 @@ public class UserService {
                     .active(true)
                     .createdBy("system")
                     .build());
-        } else {
-            anthony.setUsername("anthony.villalta@hotmail.com");
-            anthony.setEmail("anthony.villalta@hotmail.com");
-            anthony.setFullName("Anthony Villalta");
-            anthony.setPassword(passwordEncoder.encode("060697"));
-            anthony.setRole(adminRole);
-            anthony.setActive(true);
-            userRepository.save(anthony);
         }
 
-        if (userRepository.count() <= 1 && !userRepository.existsByUsername("vendedor")) {
+        if (!userRepository.existsByUsername("vendedor")) {
             userRepository.save(User.builder()
                     .username("vendedor")
                     .password(passwordEncoder.encode("vendedor123"))

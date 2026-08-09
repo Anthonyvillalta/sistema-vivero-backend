@@ -8,7 +8,7 @@ INSERT INTO roles (id, name) VALUES (3, 'ROLE_REPARTIDOR');
 -- Usuarios ('anthony.villalta@hotmail.com' / '060697', 'vendedor' / 'vendedor123', 'repartidor' / 'repartidor123')
 INSERT INTO users (id, username, password, full_name, email, phone, role_id, active, created_by)
 VALUES 
-(1, 'anthony.villalta@hotmail.com', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'Anthony Villalta', 'anthony.villalta@hotmail.com', '+51 987654321', 1, true, 'system'),
+(1, 'anthony.villalta@hotmail.com', '$2a$10$l/4vxw/TzXqYxH.152sunO3Ku7nyNwBJlavCRGfKfAdH0UjHwkFZu', 'Anthony Villalta', 'anthony.villalta@hotmail.com', '+51 987654321', 1, true, 'system'),
 (2, 'vendedor', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'María Ventas', 'ventas@vivero.pe', '+51 987654322', 2, true, 'system'),
 (3, 'repartidor', '$2a$10$eD2vI.H0m6fA.Ea00ZzGce3/K1WJ4L0k2xQ54s1Z9vG4v9S1Yj1E6', 'Carlos Delivery', 'delivery@vivero.pe', '+51 987654323', 3, true, 'system');
 
