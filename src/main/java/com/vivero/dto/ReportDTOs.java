@@ -8,8 +8,6 @@ import java.util.List;
 
 public class ReportDTOs {
 
-public class ReportDTOs {
-
     @Data
     @Builder
     public static class SalesSummaryDTO {
