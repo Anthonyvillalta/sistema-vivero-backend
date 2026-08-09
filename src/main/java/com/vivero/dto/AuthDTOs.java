@@ -56,6 +56,6 @@ public class AuthDTOs {
 
         private String email;
         private String phone;
-        private String roleName; // ROLE_ADMIN, ROLE_VENDEDOR, ROLE_REPARTIDOR
+        private String roleName;
     }
 }
