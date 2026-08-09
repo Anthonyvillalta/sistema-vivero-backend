@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:viverodb}?useSSL=${DB_SSL:true}&requireSSL=${DB_SSL:true}&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:viverodb}?useSSL=${DB_SSL:true}&requireSSL=${DB_SSL:true}&allowPublicKeyRetrieval=true&serverTimezone=America/Lima}
     username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:root}}
     password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:''}}
     hikari:
