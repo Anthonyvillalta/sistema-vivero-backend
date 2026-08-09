@@ -42,11 +42,14 @@ public class UserService {
             vendedorRole = roleRepository.save(Role.builder().name(RoleName.ROLE_VENDEDOR).build());
         }
 
-        // Only create default Anthony Villalta admin ONCE if missing from database
-        boolean adminExists = userRepository.existsByUsername("anthony.villalta@hotmail.com")
-                           || userRepository.existsByEmail("anthony.villalta@hotmail.com");
+        // Find all matching admin users (by email 'anthony.villalta@hotmail.com', username 'anthony.villalta@hotmail.com' or legacy 'admin')
+        List<User> matchingAdmins = userRepository.findUsersByUsernameOrEmail("anthony.villalta@hotmail.com");
+        if (matchingAdmins.isEmpty()) {
+            matchingAdmins = userRepository.findUsersByUsernameOrEmail("admin");
+        }
 
-        if (!adminExists) {
+        if (matchingAdmins.isEmpty()) {
+            // Create fresh admin user if missing
             userRepository.save(User.builder()
                     .username("anthony.villalta@hotmail.com")
                     .password(passwordEncoder.encode("060697"))
@@ -57,6 +60,26 @@ public class UserService {
                     .active(true)
                     .createdBy("system")
                     .build());
+        } else {
+            // Update primary matching admin user to ensure exact credentials and details
+            User primary = matchingAdmins.get(0);
+            primary.setUsername("anthony.villalta@hotmail.com");
+            primary.setEmail("anthony.villalta@hotmail.com");
+            primary.setFullName("Anthony Villalta");
+            primary.setPassword(passwordEncoder.encode("060697"));
+            primary.setRole(adminRole);
+            primary.setActive(true);
+            userRepository.save(primary);
+
+            // Clean up any extra duplicate admin rows (ID > primary.getId()) to prevent future collisions
+            if (matchingAdmins.size() > 1) {
+                for (int i = 1; i < matchingAdmins.size(); i++) {
+                    User duplicate = matchingAdmins.get(i);
+                    try {
+                        userRepository.delete(duplicate);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
 
         if (!userRepository.existsByUsername("vendedor")) {

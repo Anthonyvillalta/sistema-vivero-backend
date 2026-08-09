@@ -36,10 +36,17 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
 
-        User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getUsername())
-                .orElseThrow(() -> new BadRequestException("Usuario no encontrado"));
+        List<User> users = userRepository.findUsersByUsernameOrEmail(request.getUsername());
+        if (users.isEmpty()) {
+            throw new BadRequestException("Usuario no encontrado");
+        }
 
-        return AuthResponse.of(jwt, user.getUsername(), user.getFullName(), user.getRole().getName().name());
+        User user = users.get(0);
+        String roleStr = (user.getRole() != null && user.getRole().getName() != null)
+                ? user.getRole().getName().name()
+                : "ROLE_ADMIN";
+
+        return AuthResponse.of(jwt, user.getUsername(), user.getFullName(), roleStr);
     }
 
     @Transactional
