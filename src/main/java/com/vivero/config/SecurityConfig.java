@@ -42,31 +42,32 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/**",
-                                "/ubigeo/**",
-                                "/products/**",
-                                "/categories/**",
+                .requestMatchers(
+                        "/auth/**",
+                        "/ubigeo/**",
+                        "/products/**",
+                        "/categories/**",
                         "/orders/**",
                         "/deliveries/**",
                         "/purchases/**",
-                                "/suppliers/**",
-                                "/drivers/**",
-                                "/delivery-methods/**",
-                                "/sales/**",
-                                "/customers/**",
-                                "/expenses/**",
-                                "/inventory/**",
-                                "/dashboard/**",
-                                "/whatsapp/**",
-                                "/settings/**",
-                                "/ai/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/h2-console/**",
-                                "/public/**"
-                        ).permitAll()
+                        "/suppliers/**",
+                        "/drivers/**",
+                        "/delivery-methods/**",
+                        "/sales/**",
+                        "/customers/**",
+                        "/expenses/**",
+                        "/inventory/**",
+                        "/dashboard/**",
+                        "/whatsapp/**",
+                        "/settings/**",
+                        "/ai/**",
+                        "/reports/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/h2-console/**",
+                        "/public/**"
+                ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.disable())); // For H2 console
