@@ -94,6 +94,23 @@ public class UserService {
                     .createdBy("system")
                     .build());
         }
+
+        // Create demo admin (admin@vivero.com / admin123) ONCE if missing
+        boolean demoAdminExists = userRepository.existsByUsername("admin@vivero.com")
+                               || userRepository.existsByEmail("admin@vivero.com");
+
+        if (!demoAdminExists) {
+            userRepository.save(User.builder()
+                    .username("admin@vivero.com")
+                    .password(passwordEncoder.encode("admin123"))
+                    .fullName("Administrador Demo")
+                    .email("admin@vivero.com")
+                    .phone("+51 999999999")
+                    .role(adminRole)
+                    .active(true)
+                    .createdBy("system")
+                    .build());
+        }
     }
 
     public List<UserDTO> getAllUsers() {
